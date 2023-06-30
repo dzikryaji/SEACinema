@@ -23,7 +23,7 @@
           </li>
         <?php else: ?>
         <li class="nav-item">
-            <a class ="nav-link" href="<?= BASEURL ?>c=Home&m=login">Login</a>
+            <a class ="nav-link" href="<?= BASEURL ?>User/Login">Login</a>
         </li>
         <?php endif; ?>
       </ul>
