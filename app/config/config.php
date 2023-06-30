@@ -1,6 +1,6 @@
 <?php
 
-define('BASEURL', 'http://localhost/SEACinema/public');
+define('BASEURL', 'http://localhost/SEACinema/');
 
 // DB
 define('DB_HOST', 'localhost');
