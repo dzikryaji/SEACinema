@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $data['judul'] ?></title>
+    <title><?= $title ?></title>
     <link rel="stylesheet" href="<?= BASEURL; ?>resources/css/bootstrap.css">
     <script src="<?= BASEURL; ?>resources/js/bootstrap.bundle.js"></script>
 </head>
@@ -17,13 +17,16 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav ms-auto">
-        <?php if(isset($_SESSION['user_id'])): ?>
+        <?php if(isset($_SESSION['account'])): ?>
           <li class="nav-item">
               <a class ="nav-link" data-bs-toggle="modal" data-bs-target="#logoutModal" role="button">Logout</a>
           </li>
         <?php else: ?>
         <li class="nav-item">
-            <a class ="nav-link" href="<?= BASEURL ?>User/Login">Login</a>
+            <a class ="nav-link" href="<?= BASEURL ?>Account/Login">Login</a>
+        </li>
+        <li class="nav-item">
+            <a class ="nav-link" href="<?= BASEURL ?>Account/SignUp">Sign Up</a>
         </li>
         <?php endif; ?>
       </ul>

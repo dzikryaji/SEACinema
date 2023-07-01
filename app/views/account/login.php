@@ -3,9 +3,9 @@
     <div class="card w-25 px-3 shadow mb-3" style="border-radius: 1rem;">
         <div class="card-body">
             <h2 class="card-title my-4">Login</h2>
-            <form method="post" action="<?= BASEURL ?>">
+            <form method="post" action="<?= BASEURL ?>Account/Login">
                 <div class="mb-3">
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" required>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
                 </div>
                 <div class="mb-3">
                     <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
@@ -16,7 +16,7 @@
             </form>
             <hr class="my-3 mx-2">
             <p class="d-flex align-items-center justify-content-center my-3">
-                <span class="mx-1">Or </span> <a href="<?= BASEURL ?>User/SignUp">Sign Up</a>
+                <span class="mx-1">Or </span> <a href="<?= BASEURL ?>Account/SignUp">Sign Up</a>
             </p>
         </div>
     </div>
