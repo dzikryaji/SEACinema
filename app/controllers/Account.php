@@ -68,4 +68,11 @@ class Account extends Controller
             $this->view('account/signup', $data);
         }
     }
+
+    public function logout(){
+        session_destroy();
+
+        header("Location: " . BASEURL);
+        exit;
+    }
 }

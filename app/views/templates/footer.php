@@ -7,7 +7,7 @@
           <h5>YOU ARE ATTEMPTING TO LOGOUT</h5>
           <h6 class="mb-5">Are you sure?</h6>
           <h6 class="mb-3">Logged in as <?= $_SESSION['account']['name'] ?></h6>
-          <a type="button" class="btn btn-primary w-100" href="<?= BASEURL ?>c=Home&m=logout">LOGOUT</a>
+          <a type="button" class="btn btn-primary w-100" href="<?= BASEURL ?>Account/Logout">LOGOUT</a>
       </div>
     </div>
   </div>
