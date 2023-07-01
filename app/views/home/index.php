@@ -4,16 +4,18 @@
             <h1>SEA Cinema</h1>
         </div>
     </div>
-    <div class="container-fluid">
+    <div class="container-fluid px-5">
         <?php foreach ($movies as $index => $movie) : ?>
             <?php if ($index % 4 == 0) : ?>
                 <div class="row mb-4">
                 <?php endif; ?>
                 <div class="col-lg-3 col-md-6">
-                    <a class="link-dark text-decoration-none" href="#">
+                    <a class="link-dark text-decoration-none" href="<?= BASEURL . "Movie/MovieDetail/" . $index ?>">
                         <img src="<?= $movie->poster_url ?>" class="img-thumbnail w-100">
-                        <h6><?= $movie->title ?></h6>
-                        <h6>Rp<?= $movie->ticket_price ?></h6>
+                        <div class="py-2 px-2">
+                            <h4><?= $movie->title ?></h6>
+                            <h6>Rp<?= $movie->ticket_price ?></h6>
+                        </div>
                     </a>
                 </div>
                 <?php if ($index % 4 == 3 || $index + 1 == count($movies)) : ?>
