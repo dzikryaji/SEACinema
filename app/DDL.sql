@@ -7,3 +7,9 @@ CREATE TABLE `sea_cinema`.`account` (
         PRIMARY KEY (`id`), 
         UNIQUE (`username`)
 ) ENGINE = InnoDB;
+
+CREATE TABLE `sea_cinema`.`balance` (
+    `id_account` INT NOT NULL , 
+    `balance` INT NOT NULL,
+        FOREIGN KEY (`id_account`) REFERENCES `account`(`id`)
+) ENGINE = InnoDB;

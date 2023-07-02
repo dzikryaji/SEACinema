@@ -29,7 +29,6 @@ class Database {
 
     public function query($query)
     {
-        var_dump($query);
         $this->stmt = $this->dbh->prepare($query);
     }
 
