@@ -2,7 +2,7 @@
 
 class Ticket extends Controller
 {
-    public function book($id)
+    public function seats($id)
     {
         if (!isset($_SESSION['account'])) {
             header("Location: " . BASEURL);
@@ -14,7 +14,15 @@ class Ticket extends Controller
         $movies = json_decode($json);
         $data['movie'] = $movies[$id];
         $data['movie']->id = $id;
-        $this->view('Ticket/Book', $data, 'Ticket/Book');
+
+        $seats = $this->model('SeatsModel')->getSeatsByIdMovie($id);
+        if($seats){
+            $data['seats'] = $seats['seats'];
+        } else {
+            $data['seats'] = $this->model('SeatsModel')->createSeats($id);
+        }
+
+        $this->view('Ticket/Seats', $data, 'Ticket/Seats');
     }
 
     public function payment($id)
@@ -56,6 +64,12 @@ class Ticket extends Controller
 
             if($balance['balance'] > $totalCost){
                 $this->model('BalanceModel')->substractBalance($totalCost);
+                $seats = $this->model('SeatsModel')->getSeatsByIdMovie($_SESSION['book']['id_movie']);
+                foreach ($_SESSION['book']['seats'] as  $seat) {
+                    $seats['seats'][$seat - 1] = 1;
+                }
+
+                $this->model('SeatsModel')->upadateSeats($seats);
 
                 header("Location: " . BASEURL );
                 exit;

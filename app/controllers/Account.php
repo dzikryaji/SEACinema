@@ -18,7 +18,7 @@ class Account extends Controller
                 header("Location: " . BASEURL);
                 exit;
             } else {
-                $msg =  "Incorrect Password or Email";
+                $msg =  "Incorrect Username or Password";
                 Flasher::setFlash($msg, 'danger');
                 header("Location: " . BASEURL . "Account/Login");
                 exit;

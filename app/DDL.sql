@@ -13,3 +13,8 @@ CREATE TABLE `sea_cinema`.`balance` (
     `balance` INT NOT NULL,
         FOREIGN KEY (`id_account`) REFERENCES `account`(`id`)
 ) ENGINE = InnoDB;
+
+CREATE TABLE `sea_cinema`.`seats` (
+    `id_movie` INT NOT NULL , 
+    `seats` VARCHAR(64) NOT NULL 
+) ENGINE = InnoDB;

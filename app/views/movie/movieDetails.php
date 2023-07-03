@@ -15,7 +15,7 @@
                     <?php if ($_SESSION['account']['age'] < $movie->age_rating) : ?>
                         <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ageModal" role="button">Book Ticket</a>
                     <?php else : ?>
-                        <a href="<?= BASEURL . "Ticket/Book/" . $movie->id ?>" class="btn btn-primary">Book Ticket</a>
+                        <a href="<?= BASEURL . "Ticket/Seats/" . $movie->id ?>" class="btn btn-primary">Book Ticket</a>
                     <?php endif; ?>
                 <?php endif; ?>
             </div>
