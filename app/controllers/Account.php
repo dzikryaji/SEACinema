@@ -4,12 +4,17 @@ class Account extends Controller
 {
     public function login()
     {
+        if (isset($_SESSION['account'])) {
+            header("Location: " . BASEURL);
+            exit;
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $account = $this->model('AccountModel')->getAccountbyUsername($_POST['username']);
 
-            if($account && password_verify($_POST['password'], $account['password_hash'])){
+            if ($account && password_verify($_POST['password'], $account['password_hash'])) {
                 $_SESSION["account"] = $account;
-    
+
                 header("Location: " . BASEURL);
                 exit;
             } else {
@@ -26,6 +31,11 @@ class Account extends Controller
 
     public function signUp()
     {
+        if (isset($_SESSION['account'])) {
+            header("Location: " . BASEURL);
+            exit;
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (empty($_POST["name"])) {
                 $msg = "Name is required";
@@ -69,7 +79,13 @@ class Account extends Controller
         }
     }
 
-    public function logout(){
+    public function logout()
+    {
+        if (isset($_SESSION['account'])) {
+            header("Location: " . BASEURL);
+            exit;
+        }
+
         session_destroy();
 
         header("Location: " . BASEURL);

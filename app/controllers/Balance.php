@@ -4,7 +4,7 @@ class Balance extends Controller
 {
     public function index()
     {
-        if (!$_SESSION['account']) {
+        if (!isset($_SESSION['account'])) {
             header("Location: " . BASEURL);
             exit;
         }
@@ -16,6 +16,11 @@ class Balance extends Controller
 
     public function topUp()
     {
+        if (!isset($_SESSION['account'])) {
+            header("Location: " . BASEURL);
+            exit;
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($this->model('BalanceModel')->getBalancebyIdAccount($_SESSION['account']['id'])) {
                 $this->model('BalanceModel')->addBalance($_POST);
@@ -34,6 +39,11 @@ class Balance extends Controller
 
     public function withdraw()
     {
+        if (!isset($_SESSION['account'])) {
+            header("Location: " . BASEURL);
+            exit;
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->model('BalanceModel')->substractBalance($_POST);
             header("Location: " . BASEURL . "Balance");
