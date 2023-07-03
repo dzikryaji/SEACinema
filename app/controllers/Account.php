@@ -81,7 +81,7 @@ class Account extends Controller
 
     public function logout()
     {
-        if (isset($_SESSION['account'])) {
+        if (!isset($_SESSION['account'])) {
             header("Location: " . BASEURL);
             exit;
         }
