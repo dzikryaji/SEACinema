@@ -8,6 +8,10 @@
   <title><?= $title ?></title>
   <link rel="stylesheet" href="<?= BASEURL; ?>resources/css/bootstrap.css">
   <script src="<?= BASEURL; ?>resources/js/bootstrap.bundle.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <?php if(isset($script)):?>
+  <script src="<?= BASEURL. "resources/js/" . $script . ".js" ?>"></script>
+  <?php endif;?>
 </head>
 
 <body>

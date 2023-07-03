@@ -23,9 +23,9 @@ class Balance extends Controller
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($this->model('BalanceModel')->getBalancebyIdAccount($_SESSION['account']['id'])) {
-                $this->model('BalanceModel')->addBalance($_POST);
+                $this->model('BalanceModel')->addBalance($_POST['topUp']);
             } else {
-                $this->model('BalanceModel')->createBalance($_POST);
+                $this->model('BalanceModel')->createBalance($_POST['topUp']);
             }
             header("Location: " . BASEURL . "Balance");
             exit;
@@ -45,7 +45,7 @@ class Balance extends Controller
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $this->model('BalanceModel')->substractBalance($_POST);
+            $this->model('BalanceModel')->substractBalance($_POST['withdraw']);
             header("Location: " . BASEURL . "Balance");
             exit;
         } else {

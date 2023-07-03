@@ -15,38 +15,38 @@ class BalanceModel{
         return $this->db->single();
     }
     
-    public function createBalance($data){
+    public function createBalance($addNominal){
         $query = "INSERT INTO {$this->table}
                     VALUES
-                  (:id_account, :topUp)";
+                  (:id_account, :addNominal)";
         
         $this->db->query($query);
         $this->db->bind('id_account', $_SESSION['account']['id']);
-        $this->db->bind('topUp', $data['topUp']);
+        $this->db->bind('addNominal', $addNominal);
 
         $this->db->execute();
     }
 
-    public function addBalance($data){
+    public function addBalance($addNominal){
         $query = 'UPDATE ' . $this->table . '
-                    SET balance = balance + :topUp
+                    SET balance = balance + :addNominal
                     WHERE id_account=:id_account';
         
         $this->db->query($query);
         $this->db->bind('id_account', $_SESSION['account']['id']);
-        $this->db->bind('topUp', $data['topUp']);
+        $this->db->bind('addNominal', $addNominal);
 
         $this->db->execute();
     }
 
-    public function substractBalance($data){
+    public function substractBalance($substractNominal){
         $query = 'UPDATE ' . $this->table . '
-                    SET balance = balance - :withdraw
+                    SET balance = balance - :substractNominal
                     WHERE id_account=:id_account';
         
         $this->db->query($query);
         $this->db->bind('id_account', $_SESSION['account']['id']);
-        $this->db->bind('withdraw', $data['withdraw']);
+        $this->db->bind('substractNominal', $substractNominal);
 
         $this->db->execute();
     }
