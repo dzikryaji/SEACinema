@@ -2,6 +2,18 @@
 
 class Ticket extends Controller
 {
+    public function index()
+    {
+        if (!isset($_SESSION['account'])) {
+            header("Location: " . BASEURL);
+            exit;
+        }
+
+        $ticket = $this->model('TicketModel')->getTicketbyIdAccount($_SESSION['account']['id']);
+
+        var_dump($ticket);
+    }
+
     public function seats($id)
     {
         if (!isset($_SESSION['account'])) {
@@ -16,7 +28,7 @@ class Ticket extends Controller
         $data['movie']->id = $id;
 
         $seats = $this->model('SeatsModel')->getSeatsByIdMovie($id);
-        if($seats){
+        if ($seats) {
             $data['seats'] = $seats['seats'];
         } else {
             $data['seats'] = $this->model('SeatsModel')->createSeats($id);
@@ -59,24 +71,36 @@ class Ticket extends Controller
         $movie = $movies[$_SESSION['book']['id_movie']];
 
         $balance = $this->model('BalanceModel')->getBalancebyIdAccount($_SESSION['account']['id']);
-        if ($balance) {
-            $totalCost = $movie->ticket_price * count($_SESSION['book']['seats']);
+        $totalCost = $movie->ticket_price * count($_SESSION['book']['seats']);
+        if ($balance || $balance['balance'] > $totalCost) {
 
-            if($balance['balance'] > $totalCost){
-                $this->model('BalanceModel')->substractBalance($totalCost);
-                $seats = $this->model('SeatsModel')->getSeatsByIdMovie($_SESSION['book']['id_movie']);
-                foreach ($_SESSION['book']['seats'] as  $seat) {
-                    $seats['seats'][$seat - 1] = 1;
+            $db = new Database;
+            $db->beginTransaction();
+            try {
+                $seatsMovie = $this->model('SeatsModel')->getSeatsByIdMovie($_SESSION['book']['id_movie']);
+                $seatsTicket = '';
+                for ($i = 0; $i < 64; $i++) {
+                    $seatsTicket .= 0;
                 }
 
-                $this->model('SeatsModel')->upadateSeats($seats);
+                foreach ($_SESSION['book']['seats'] as  $seat) {
+                    $seatsMovie['seats'][$seat - 1] = 1;
+                    $seatsTicket[$seat - 1] = 1;
+                }
 
-                header("Location: " . BASEURL );
-                exit;
-            } else {
-                $msg =  "Insufficient Balance";
+                $this->model('BalanceModel')->substractBalance($totalCost);
+                $this->model('SeatsModel')->upadateSeats($seatsMovie);
+                $this->model('TicketModel')->setTicket($_SESSION['account']['id'], $_SESSION['book']['id_movie'], $seatsTicket);
+                $db->commit();
+
+                $msg =  "Ticket Purchased";
+                Flasher::setFlash($msg, 'success');
+            } catch (Exception $e) {
+                $db->rollback();
+                $msg =  "Failed to purchase ticket";
                 Flasher::setFlash($msg, 'danger');
-                header("Location: " . BASEURL . "Balance");
+            } finally {
+                header("Location: " . BASEURL);
                 exit;
             }
         } else {
