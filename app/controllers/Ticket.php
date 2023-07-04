@@ -9,9 +9,23 @@ class Ticket extends Controller
             exit;
         }
 
-        $ticket = $this->model('TicketModel')->getTicketbyIdAccount($_SESSION['account']['id']);
+        $json = file_get_contents('https://seleksi-sea-2023.vercel.app/api/movies');
+        $movies = json_decode($json, true);
+        $tickets = $this->model('TicketModel')->getTicketbyIdAccount($_SESSION['account']['id']);
 
-        var_dump($ticket);
+        foreach ($tickets as $index => $ticket) {
+            $tickets[$index] = array_merge($ticket, $movies[$ticket['id_movie']]);
+            $seats = [];
+            for ($i = 0; $i < strlen($tickets[$index]['seats']); $i++) {
+                if ($tickets[$index]['seats'][$i]) {
+                    $seats[] = $i + 1;
+                }
+            }
+            $tickets[$index]['seats'] = $seats;
+        }
+        $data['tickets'] = $tickets;
+        $data['title'] = "Your Ticket";
+        $this->view('Ticket/Index', $data);
     }
 
     public function seats($id)
@@ -89,7 +103,7 @@ class Ticket extends Controller
                 }
 
                 $this->model('BalanceModel')->substractBalance($totalCost);
-                $this->model('SeatsModel')->upadateSeats($seatsMovie);
+                $this->model('SeatsModel')->updateSeats($seatsMovie);
                 $this->model('TicketModel')->setTicket($_SESSION['account']['id'], $_SESSION['book']['id_movie'], $seatsTicket);
                 $db->commit();
 
@@ -100,13 +114,56 @@ class Ticket extends Controller
                 $msg =  "Failed to purchase ticket";
                 Flasher::setFlash($msg, 'danger');
             } finally {
-                header("Location: " . BASEURL);
+                header("Location: " . BASEURL . "Ticket");
                 exit;
             }
         } else {
             $msg =  "Insufficient Balance";
             Flasher::setFlash($msg, 'danger');
             header("Location: " . BASEURL . "Balance");
+            exit;
+        }
+    }
+
+    public function cancel($idMovie)
+    {
+        if (!isset($_SESSION['account'])) {
+            header("Location: " . BASEURL);
+            exit;
+        }
+        $db = new Database;
+        $json = file_get_contents('https://seleksi-sea-2023.vercel.app/api/movies');
+        $movies = json_decode($json, true);
+        $movie = $movies[$idMovie];
+
+        try {
+            $db->beginTransaction();
+
+            $ticket = $this->model('TicketModel')->getTicketbyIdAccountAndIdMovie($_SESSION['account']['id'], $idMovie);
+            $seats = $this->model('SeatsModel')->getSeatsByIdMovie($idMovie);
+
+            $refund = 0;
+            for ($i = 0; $i < strlen($ticket['seats']); $i++) {
+                if ($ticket['seats'][$i]) {
+                    $seats['seats'][$i] =  0;
+                    $refund += $movie['ticket_price'];
+                }
+            }
+
+            $this->model('SeatsModel')->updateSeats($seats);
+            $this->model('TicketModel')->deleteTicket($_SESSION['account']['id'], $idMovie);
+            $this->model('BalanceModel')->addBalance($refund);
+
+            $db->commit();
+            $msg = "Balance Refunded : Rp" . $refund;
+            Flasher::setFlash($msg, "success");
+            header("Location: " . BASEURL . "Ticket");
+            exit;
+        } catch (Exception $e) {
+            $db->rollback();
+            $msg = "Ticket Cancellation Failed";
+            Flasher::setFlash($msg, "danger");
+            header("Location: " . BASEURL . "Ticket");
             exit;
         }
     }

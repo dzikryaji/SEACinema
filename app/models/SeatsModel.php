@@ -35,7 +35,7 @@ class SeatsModel
         return $seats;
     }
 
-    public function upadateSeats($seats)
+    public function updateSeats($seats)
     {
         $query ='UPDATE ' . $this->table . '
                     SET seats = :seats
