@@ -91,4 +91,71 @@ class Account extends Controller
         header("Location: " . BASEURL);
         exit;
     }
+
+    public function balance()
+    {
+        if (!isset($_SESSION['account'])) {
+            header("Location: " . BASEURL);
+            exit;
+        }
+
+        $data['title'] = 'Balance';
+        $data['balance'] = $_SESSION['account']['balance'];
+        $this->view('account/balance', $data);
+    }
+
+    public function topUp()
+    {
+        if (!isset($_SESSION['account'])) {
+            header("Location: " . BASEURL);
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->model('AccountModel')->addBalance($_POST['topUp']);
+            $_SESSION['account']['balance'] = $_SESSION['account']['balance'] + $_POST['topUp'];
+            try {
+                $msg = "Top Up Rp" . $_POST['topUp'] . ' Success';
+                Flasher::setFlash($msg, "success");
+            } catch (Exception $e) {
+                $msg = "Top Up Rp" . $_POST['topUp'] . ' Failed';
+                Flasher::setFlash($msg, "danger");
+            } finally {
+                header("Location: " . BASEURL . "Account/Balance");
+                exit;
+            }
+        } else {
+            $data['title'] = 'Top Up';
+            $data['balance'] = $_SESSION['account']['balance'];
+            $this->view('account/topUp', $data);
+        }
+    }
+
+
+    public function withdraw()
+    {
+        if (!isset($_SESSION['account'])) {
+            header("Location: " . BASEURL);
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            try {
+                $this->model('AccountModel')->substractBalance($_POST['withdraw']);
+                $_SESSION['account']['balance'] = $_SESSION['account']['balance'] - $_POST['withdraw'];
+                $msg = "Withdraw Rp" . $_POST['withdraw'] . ' Success';
+                Flasher::setFlash($msg, "success");
+            } catch (Exception $e) {
+                $msg = "Withdraw Rp" . $_POST['withdraw'] . ' Failed';
+                Flasher::setFlash($msg, "danger");
+            } finally {
+                header("Location: " . BASEURL . "Account/Balance");
+                exit;
+            }
+        } else {
+            $data['title'] = 'Withdraw';
+            $data['balance'] = $_SESSION['account']['balance'];
+            $this->view('account/withdraw', $data);
+        }
+    }
 }

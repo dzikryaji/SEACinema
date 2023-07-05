@@ -25,10 +25,10 @@
         <ul class="navbar-nav ms-auto">
           <?php if (isset($_SESSION['account'])) : ?>
             <li class="nav-item">
-              <a class="nav-link" href="<?= BASEURL ?>Ticket/Index">Ticket</a>
+              <a class="nav-link" href="<?= BASEURL ?>Ticket">Ticket</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="<?= BASEURL ?>Balance/Index">Balance</a>
+              <a class="nav-link" href="<?= BASEURL ?>Account/Balance">Balance</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" data-bs-toggle="modal" data-bs-target="#logoutModal" role="button">Logout</a>

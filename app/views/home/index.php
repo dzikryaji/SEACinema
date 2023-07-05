@@ -11,10 +11,10 @@
                 <?php endif; ?>
                 <div class="col-lg-3 col-md-6">
                     <a class="link-dark text-decoration-none" href="<?= BASEURL . "Movie/MovieDetail/" . $index ?>">
-                        <img src="<?= $movie->poster_url ?>" class="img-thumbnail w-100">
+                        <img src="<?= $movie['poster_url'] ?>" class="img-thumbnail w-100">
                         <div class="py-2 px-2">
-                            <h4><?= $movie->title ?></h6>
-                            <h6>Rp<?= $movie->ticket_price ?></h6>
+                            <h4><?= $movie['title'] ?></h6>
+                            <h6>Rp<?= $movie['ticket_price'] ?></h6>
                         </div>
                     </a>
                 </div>

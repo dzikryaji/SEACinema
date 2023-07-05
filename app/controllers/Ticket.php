@@ -28,51 +28,6 @@ class Ticket extends Controller
         $this->view('Ticket/Index', $data);
     }
 
-    public function seats($id)
-    {
-        if (!isset($_SESSION['account'])) {
-            header("Location: " . BASEURL);
-            exit;
-        }
-
-        $data['title'] = 'Book Ticket';
-        $json = file_get_contents('https://seleksi-sea-2023.vercel.app/api/movies');
-        $movies = json_decode($json);
-        $data['movie'] = $movies[$id];
-        $data['movie']->id = $id;
-
-        $seats = $this->model('SeatsModel')->getSeatsByIdMovie($id);
-        if ($seats) {
-            $data['seats'] = $seats['seats'];
-        } else {
-            $data['seats'] = $this->model('SeatsModel')->createSeats($id);
-        }
-
-        $this->view('Ticket/Seats', $data, 'Ticket/Seats');
-    }
-
-    public function payment($id)
-    {
-        if (!isset($_SESSION['account'])) {
-            header("Location: " . BASEURL);
-            exit;
-        }
-
-        $data['title'] = 'Payment';
-
-        $data['seats'] = $_POST;
-
-        $json = file_get_contents('https://seleksi-sea-2023.vercel.app/api/movies');
-        $movies = json_decode($json);
-        $data['movie'] = $movies[$id];
-        $data['movie']->id = $id;
-
-        $_SESSION['book'] = ['id_movie' => $id, 'seats' => $_POST];
-
-        $data['balance'] = $this->model('BalanceModel')->getBalancebyIdAccount($_SESSION['account']['id']);
-        $this->view('Ticket/Payment', $data);
-    }
-
     public function bookTicket()
     {
         if (!isset($_SESSION['account']) || !isset($_SESSION['book'])) {
@@ -84,10 +39,9 @@ class Ticket extends Controller
         $movies = json_decode($json);
         $movie = $movies[$_SESSION['book']['id_movie']];
 
-        $balance = $this->model('BalanceModel')->getBalancebyIdAccount($_SESSION['account']['id']);
+        $balance = $_SESSION['account']['balance'];
         $totalCost = $movie->ticket_price * count($_SESSION['book']['seats']);
-        if ($balance || $balance['balance'] > $totalCost) {
-
+        if ($balance > $totalCost) {
             $db = new Database;
             $db->beginTransaction();
             try {
@@ -102,9 +56,10 @@ class Ticket extends Controller
                     $seatsTicket[$seat - 1] = 1;
                 }
 
-                $this->model('BalanceModel')->substractBalance($totalCost);
                 $this->model('SeatsModel')->updateSeats($seatsMovie);
                 $this->model('TicketModel')->setTicket($_SESSION['account']['id'], $_SESSION['book']['id_movie'], $seatsTicket);
+                $this->model('AccountModel')->substractBalance($totalCost);
+                $_SESSION['account']['balance'] -= $totalCost;
                 $db->commit();
 
                 $msg =  "Ticket Purchased";
@@ -114,13 +69,14 @@ class Ticket extends Controller
                 $msg =  "Failed to purchase ticket";
                 Flasher::setFlash($msg, 'danger');
             } finally {
+                unset($_SESSION['book']);
                 header("Location: " . BASEURL . "Ticket");
                 exit;
             }
         } else {
             $msg =  "Insufficient Balance";
             Flasher::setFlash($msg, 'danger');
-            header("Location: " . BASEURL . "Balance");
+            header("Location: " . BASEURL . "Account/Balance");
             exit;
         }
     }
@@ -152,7 +108,8 @@ class Ticket extends Controller
 
             $this->model('SeatsModel')->updateSeats($seats);
             $this->model('TicketModel')->deleteTicket($_SESSION['account']['id'], $idMovie);
-            $this->model('BalanceModel')->addBalance($refund);
+            $this->model('AccountModel')->addBalance($refund);
+            $_SESSION['account']['balance'] += $refund;
 
             $db->commit();
             $msg = "Balance Refunded : Rp" . $refund;
