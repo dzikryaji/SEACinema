@@ -14,7 +14,7 @@
                         <img src="<?= $movie['poster_url'] ?>" class="img-thumbnail w-100">
                         <div class="py-2 px-2">
                             <h4><?= $movie['title'] ?></h6>
-                            <h6>Rp<?= $movie['ticket_price'] ?></h6>
+                                <h6>Rp<?= $movie['ticket_price'] ?></h6>
                         </div>
                     </a>
                 </div>
@@ -22,5 +22,26 @@
                 </div>
             <?php endif; ?>
         <?php endforeach; ?>
+    </div>
+    <div class="d-flex align-items-center justify-content-center w-100">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item <?= $currentPage == 1 ? 'disabled' : '' ?>">
+                    <a class="page-link" aria-label="Previous" <?= $currentPage == $totalPages ? 'tabindex="-1" aria-disabled="true"' : 'href="' . BASEURL . "Home/Index/" . $currentPage - 1 . '"' ?>>
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
+                    <li class="page-item <?= $currentPage == $i ? 'active' : '' ?>">
+                        <a class="page-link" href="<?= BASEURL . "Home/Index/" . $i ?>"><?= $i ?></a>
+                    </li>
+                <?php endfor; ?>
+                <li class="page-item <?= $currentPage == $totalPages ? 'disabled' : '' ?>">
+                    <a class="page-link" aria-label="Next" <?= $currentPage == $totalPages ? 'tabindex="-1" aria-disabled="true"' : 'href="' . BASEURL . "Home/Index/" . $currentPage + 1 . '"' ?>>
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </section>
