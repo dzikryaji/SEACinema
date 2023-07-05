@@ -8,21 +8,48 @@
         <div class="container-fluid mb-4">
             <?php for ($index = 1; $index <= 64; $index++) : ?>
                 <?php if ($index % 8 == 1) : ?>
-                    <div class="row gx-1 mb-2 justify-content-between px-lg-5 px-md-0">
+                    <div class="row gx-1 mb-2 justify-content-center">
                     <?php endif; ?>
                     <div class="col-1">
-                        <input class="form-check-input w-100" type="checkbox" value="<?= $index ?>" id="Seat_<?= $index ?>" name="Seat_<?= $index ?>" <?= $seats[$index - 1] ? 'disabled' : '' ?>>
-                        <label class="form-check-label text-center w-100" for="Seat_<?= $index ?>">
-                            Seat <?= $index ?>
+                        <input class="btn-check" type="checkbox" autocomplete="off" value="<?= $index ?>" id="Seat_<?= $index ?>" name="Seat_<?= $index ?>" <?= $seats[$index - 1] ? 'disabled' : '' ?>>
+                        <label class="btn btn-outline-primary w-100 px-0" for="Seat_<?= $index ?>">
+                            <?= $index ?>
                         </label>
                     </div>
+                    <?php if ($index % 4 == 0 && $index % 8 != 0) : ?>
+                        <div class="col-1"></div>
+                    <?php endif; ?>
                     <?php if ($index % 8 == 0 || $index == 64) : ?>
                     </div>
                 <?php endif; ?>
             <?php endfor; ?>
+            <div class="row mb-5 mt-2 justify-content-center">
+                <div class="col-9 bg-secondary rounded">
+                    <div class="w-100 text-center text-light py-1 fw-bold">Screen</div>
+                </div>
+            </div>
             <div class="row mt-4 justify-content-center">
-                <input type="submit" value="Book Ticket" class="btn btn-primary w-50" disabled>
+                <?php if ($_SESSION['account']['age'] < $movie['age_rating']) : ?>
+                    <input id="btnBook" type="button" value="Book Ticket" class="btn btn-primary w-50" data-bs-toggle="modal" data-bs-target="#ageModal">
+                <?php else : ?>
+                    <input id="btnBook" type="submit" value="Book Ticket" class="btn btn-primary w-50" disabled>
+                <?php endif; ?>
             </div>
         </div>
     </form>
 </section>
+
+<?php if ($_SESSION['account']['age'] < $movie['age_rating']) : ?>
+    <!-- Modal -->
+    <div class="modal fade" id="ageModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content p-3 " style="border-radius: 1rem;">
+                <div class="modal-body d-flex flex-column align-items-center justify-content-center">
+                    <h5 class="mb-4">YOU CANT BOOK THIS MOVIE</h5>
+                    <h6 class="mb-3">Your age is below <?= $movie['age_rating'] ?> years old</h6>
+                    <button type="button" class="btn btn-primary w-100" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
