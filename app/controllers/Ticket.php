@@ -45,19 +45,27 @@ class Ticket extends Controller
             $db = new Database;
             $db->beginTransaction();
             try {
-                $seatsMovie = $this->model('SeatsModel')->getSeatsByIdMovie($_SESSION['book']['id_movie']);
+                $seatsMovie = $this->model('SeatsModel')->getSeatsByIdSeats($_SESSION['book']['id_seats']);
                 $seatsTicket = '';
                 for ($i = 0; $i < 64; $i++) {
                     $seatsTicket .= 0;
                 }
 
                 foreach ($_SESSION['book']['seats'] as  $seat) {
-                    $seatsMovie['seats'][$seat - 1] = 1;
-                    $seatsTicket[$seat - 1] = 1;
+                    if(!($seatsMovie['seats'][$seat - 1])){
+                        $seatsMovie['seats'][$seat - 1] = 1;
+                        $seatsTicket[$seat - 1] = 1;
+                    } else {
+                        $msg =  "Failed to purchase ticket";
+                        Flasher::setFlash($msg, 'danger'); 
+                        unset($_SESSION['book']);
+                        header("Location: " . BASEURL . "Ticket");
+                        exit;
+                    }
                 }
 
                 $this->model('SeatsModel')->updateSeats($seatsMovie);
-                $this->model('TicketModel')->setTicket($_SESSION['account']['id'], $_SESSION['book']['id_movie'], $seatsTicket);
+                $this->model('TicketModel')->setTicket($_SESSION['account']['id'], $_SESSION['book']['id_movie'], $_SESSION['book']['id_seats'], $seatsTicket);
                 $this->model('AccountModel')->substractBalance($totalCost);
                 $_SESSION['account']['balance'] -= $totalCost;
                 $db->commit();

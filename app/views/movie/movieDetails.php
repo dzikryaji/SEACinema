@@ -12,7 +12,27 @@
                     <p><?= $movie['description'] ?></p>
                 </div>
                 <?php if (isset($_SESSION['account'])) : ?>
-                    <a href="<?= BASEURL . "Movie/Seats/" . $movie['id'] ?>" class="btn btn-primary">Book Ticket</a>
+                    <form action="<?= BASEURL . "Movie/Seats/" . $movie['id'] ?>" method="post">
+                        <div class="mb-2">
+                            <label class="form-label">Dates : </label>
+                            <div>
+                                <?php foreach ($dates as $index => $date) : ?>
+                                    <input type="radio" class="btn-check" value="<?= $date ?>" name="date" id="<?= $index ?>" autocomplete="off" <?= $index == 0 ? 'checked' : '' ?>>
+                                    <label class="btn btn-outline-primary" for="<?= $index ?>"><?= date("d F Y", strtotime($date)) ?></label>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Showtimes : </label>
+                            <div>
+                                <?php foreach ($showtimes as $index => $showtime) : ?>
+                                    <input type="radio" class="btn-check" value="<?= $showtime ?>" name="showtime" id="<?= $index ?>" autocomplete="off" <?= $index == 0 ? 'checked' : '' ?>>
+                                    <label class="btn btn-outline-primary" for="<?= $index ?>"><?= $showtime ?></label>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Book Ticket</button>
+                    </form>
                 <?php endif; ?>
             </div>
         </div>
