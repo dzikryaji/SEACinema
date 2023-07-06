@@ -1,6 +1,6 @@
 <section class="d-flex flex-column align-items-center justify-content-center vh-100">
     <?php Flasher::flash(); ?>
-    <div class="card px-3 shadow" style="border-radius: 1rem; width: 500px;">
+    <div class="card px-3 shadow bg-secondary" style="border-radius: 1rem; width: 500px;">
         <div class="card-body">
             <h2 class="card-title my-4">Sign Up</h2>
                 <form method="post" action="<?= BASEURL ?>Account/SignUp">

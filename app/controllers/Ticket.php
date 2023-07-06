@@ -24,6 +24,7 @@ class Ticket extends Controller
             $tickets[$index]['seats'] = $seats;
         }
         $data['tickets'] = $tickets;
+        $data['activeTicket'] = 'active';
         $data['title'] = "Your Ticket";
         $this->view('Ticket/Index', $data);
     }
@@ -89,22 +90,22 @@ class Ticket extends Controller
         }
     }
 
-    public function cancel($idMovie)
+    public function cancel($idSeats)
     {
         if (!isset($_SESSION['account'])) {
             header("Location: " . BASEURL);
             exit;
         }
         $db = new Database;
-        $json = file_get_contents('https://seleksi-sea-2023.vercel.app/api/movies');
-        $movies = json_decode($json, true);
-        $movie = $movies[$idMovie];
-
+        
         try {
             $db->beginTransaction();
-
-            $ticket = $this->model('TicketModel')->getTicketbyIdAccountAndIdMovie($_SESSION['account']['id'], $idMovie);
-            $seats = $this->model('SeatsModel')->getSeatsByIdMovie($idMovie);
+            
+            $ticket = $this->model('TicketModel')->getTicketbyIdAccountAndIdSeats($_SESSION['account']['id'], $idSeats);
+            $seats = $this->model('SeatsModel')->getSeatsByIdSeats($idSeats);
+            $json = file_get_contents('https://seleksi-sea-2023.vercel.app/api/movies');
+            $movies = json_decode($json, true);
+            $movie = $movies[$seats['id_movie']];
 
             $refund = 0;
             for ($i = 0; $i < strlen($ticket['seats']); $i++) {
@@ -115,7 +116,7 @@ class Ticket extends Controller
             }
 
             $this->model('SeatsModel')->updateSeats($seats);
-            $this->model('TicketModel')->deleteTicket($_SESSION['account']['id'], $idMovie);
+            $this->model('TicketModel')->deleteTicket($_SESSION['account']['id'], $idSeats);
             $this->model('AccountModel')->addBalance($refund);
             $_SESSION['account']['balance'] += $refund;
 

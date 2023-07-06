@@ -62,12 +62,14 @@ class Movie extends Controller{
         unset($_POST['date']);
         $data['showtime'] = $_POST['showtime'];
         unset($_POST['showtime']);
-        $data['seats'] = $_POST;
+        $data['seats'] = array_values($_POST);
 
         $json = file_get_contents('https://seleksi-sea-2023.vercel.app/api/movies');
         $movies = json_decode($json, true);
-        $data['movie'] = $movies[$id];
+        $movie = $movies[$id];
+        $data['movie'] = $movie;
         $data['movie']['id'] = $id;
+        $data['total'] = count($_POST) * $movie['ticket_price'];
 
         $_SESSION['book'] = ['id_movie' => $id, 'id_seats' => $seats['id_seats'], 'seats' => $_POST];
 

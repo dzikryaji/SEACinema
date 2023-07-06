@@ -11,7 +11,11 @@ class TicketModel
     }
 
     public function getTicketbyIdAccount($idAccount){
-        $this->db->query('SELECT * FROM ' . $this->table . ' WHERE id_account=:idAccount');
+        $query = 'SELECT seats.date, seats.showtime, ticket.*
+                    FROM seats
+                    JOIN ticket 
+                    ON seats.id_seats = ticket.id_seats AND id_account=:idAccount;';
+        $this->db->query($query);
         $this->db->bind('idAccount', $idAccount);
         return $this->db->resultSet();
     }

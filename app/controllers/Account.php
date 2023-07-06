@@ -25,6 +25,7 @@ class Account extends Controller
             }
         } else {
             $data['title'] = 'Login';
+            $data['activeLogin'] = 'active';
             $this->view('account/login', $data);
         }
     }
@@ -75,6 +76,7 @@ class Account extends Controller
             }
         } else {
             $data['title'] = 'Sign Up';
+            $data['activeSignUp'] = 'active';
             $this->view('account/signup', $data);
         }
     }
@@ -100,6 +102,7 @@ class Account extends Controller
         }
 
         $data['title'] = 'Balance';
+        $data['activeBalance'] = 'active';
         $data['balance'] = $_SESSION['account']['balance'];
         $this->view('account/balance', $data);
     }
@@ -126,6 +129,7 @@ class Account extends Controller
             }
         } else {
             $data['title'] = 'Top Up';
+            $data['activeBalance'] = 'active';
             $data['balance'] = $_SESSION['account']['balance'];
             $this->view('account/topUp', $data);
         }
@@ -154,6 +158,7 @@ class Account extends Controller
             }
         } else {
             $data['title'] = 'Withdraw';
+            $data['activeBalance'] = 'active';
             $data['balance'] = $_SESSION['account']['balance'];
             $this->view('account/withdraw', $data);
         }
