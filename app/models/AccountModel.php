@@ -10,9 +10,9 @@ class AccountModel{
     }
     
     public function createAccount($data){
-        $query = "INSERT INTO account
+        $query = "INSERT INTO (name, username, age, balance, password_hash) account
                     VALUES
-                  ('', :name, :username, :age, :balance, :password_hash)";
+                  (:name, :username, :age, :balance, :password_hash)";
         
         $this->db->query($query);
         $this->db->bind('name', $data['name']);

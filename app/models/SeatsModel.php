@@ -28,9 +28,9 @@ class SeatsModel
 
     public function createSeats($idMovie, $date, $showtime)
     {
-        $query = "INSERT INTO " . $this->table . "
+        $query = "INSERT INTO " . $this->table . " (id_movie, date, showtime, seats)
                     VALUES
-                    ('', :idMovie, :date, :showtime, :seats)";
+                    (:idMovie, :date, :showtime, :seats)";
 
         $seats = '';
         for ($i=0; $i < 64; $i++) { 

@@ -1,4 +1,4 @@
-CREATE TABLE `sea_cinema`.`account` (
+CREATE TABLE `account` (
     `id` INT NOT NULL AUTO_INCREMENT , 
     `name` VARCHAR(128) NOT NULL , 
     `username` VARCHAR(128) NOT NULL , 
@@ -9,7 +9,7 @@ CREATE TABLE `sea_cinema`.`account` (
         UNIQUE (`username`)
 ) ENGINE = InnoDB;
 
-CREATE TABLE `sea_cinema`.`seats` (
+CREATE TABLE `seats` (
     `id_seats` INT NOT NULL AUTO_INCREMENT,
     `id_movie` INT NOT NULL , 
     `date` DATE NOT NULL , 
@@ -18,11 +18,11 @@ CREATE TABLE `sea_cinema`.`seats` (
      PRIMARY KEY (`id_seats`)
 ) ENGINE = InnoDB;
 
-CREATE TABLE `sea_cinema`.`ticket` (
+CREATE TABLE `ticket` (
     `id_account` INT NOT NULL , 
     `id_movie` INT NOT NULL , 
     `id_seats` INT NOT NULL , 
     `seats` VARCHAR(64) NOT NULL ,
-        FOREIGN KEY (`id_account`) REFERENCES `account`(`id`)
+        FOREIGN KEY (`id_account`) REFERENCES `account`(`id`),
         FOREIGN KEY (`id_seats`) REFERENCES `seats`(`id_seats`)
 ) ENGINE = InnoDB;
