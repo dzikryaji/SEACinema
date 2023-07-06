@@ -8,7 +8,7 @@
                         <img class="img-fluid" src="<?= $movie['poster_url'] ?>" alt="">
                     </div>
                 </div>
-                <div class="col-lg-4 wow fadeIn" data-wow-delay="0.3s">
+                <div class="col-lg-5 wow fadeIn" data-wow-delay="0.3s">
                     <div class="bg-secondary h-100 d-flex flex-column p-5">
                         <h1 class="text-uppercase mb-4"><?= $movie['title']; ?></h1>
 

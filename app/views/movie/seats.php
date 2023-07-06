@@ -53,7 +53,7 @@
     <!-- Modal -->
     <div class="modal fade bg-secondary" id="ageModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content p-3 " style="border-radius: 1rem;">
+            <div class="modal-content p-3 bg-secondary" style="border-radius: 1rem;">
                 <div class="modal-body d-flex flex-column align-items-center justify-content-center">
                     <h5 class="mb-4">YOU CANT BOOK THIS MOVIE</h5>
                     <h6 class="mb-3">Your age is below <?= $movie['age_rating'] ?> years old</h6>
@@ -63,3 +63,16 @@
         </div>
     </div>
 <?php endif; ?>
+
+<!-- Modal -->
+<div class="modal fade" id="seatsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3 bg-secondary" style="border-radius: 1rem;">
+            <div class="modal-body d-flex flex-column align-items-center justify-content-center">
+                <h5 class="mb-4">YOU CANT BOOK MORE THAN 6 SEATS</h5>
+                <h6 class="mb-3">You can only book 6 seats or less at once</h6>
+                <button type="button" class="btn btn-primary w-100" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
