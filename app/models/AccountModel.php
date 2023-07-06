@@ -10,7 +10,7 @@ class AccountModel{
     }
     
     public function createAccount($data){
-        $query = "INSERT INTO (name, username, age, balance, password_hash) account
+        $query = "INSERT INTO account (`name`, `username`, `age`, `balance`, `password_hash`)
                     VALUES
                   (:name, :username, :age, :balance, :password_hash)";
         
