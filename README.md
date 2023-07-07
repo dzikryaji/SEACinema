@@ -100,6 +100,14 @@ is located in the `app/config` folder, and the `ddl.sql` file is located in the 
 
 The SEACinema web app uses the Hair Salon HTML template from [HTML Codex](https://htmlcodex.com/hair-salon-html-template/). Please visit the provided link for more information about the template, including instructions on how to use and customize it.
 
+## GitHub Repository
+
+The source code of the SEACinema PHP web app is hosted on GitHub. You can find the project repository at:
+
+[GitHub Repository](https://github.com/dzikryaji/SEACinema)
+
+Feel free to explore the repository to access the source code and learn more about the project structure and implementation.
+
 ## Credits
 
 The SEACinema web app is developed by [dzikryaji](https://github.com/dzikryaji). The HTML template is provided by [HTML Codex](https://htmlcodex.com/).
