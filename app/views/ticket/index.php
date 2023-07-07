@@ -18,11 +18,11 @@
                                 <div class="bg-secondary h-100 d-flex flex-column p-3">
                                     <h4 class="text-uppercase mb-4"><?= $ticket['title']; ?></h4>
 
-                                    <div class="d-flex py-2">
+                                    <div class="d-flex py-2 align-items-center">
                                         <h6 class="text-uppercase mb-0 me-2">Date : </h6>
-                                        <span><?= $ticket['date'] ?></span>
+                                        <span><?= date("d F Y", strtotime($ticket['date'])) ?></span>
                                     </div>
-                                    <div class="d-flex py-2">
+                                    <div class="d-flex py-2 align-items-center">
                                         <h6 class="text-uppercase mb-0 me-2">Showtime : </h6>
                                         <span class=""><?= date("H:i", strtotime($ticket['showtime'])) ?></span>
                                     </div>
